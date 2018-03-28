@@ -1,0 +1,9 @@
+## Project configuration
+/composer.lock
+/config/app.php
+/config/database.php
+/vendor
+/.env
+
+## Development tools & IDE configuration
+/.idea/

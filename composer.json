@@ -1,0 +1,26 @@
+{
+  "name": "imajinyun/easy-phalcon",
+  "description": "An application derived from the Phalcon framework is easier to develop interface.",
+  "require": {
+    "vlucas/phpdotenv": "^2.5@dev",
+    "illuminate/support": "^5.7@dev",
+    "symfony/filesystem": "^4.1@dev",
+    "nilnice/phalcon-framework": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "app/Support/helpers.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "imajinyun",
+      "email": "imajinyun@gmail.com"
+    }
+  ]
+}
