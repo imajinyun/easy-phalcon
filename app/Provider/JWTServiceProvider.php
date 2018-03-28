@@ -2,7 +2,6 @@
 
 namespace App\Provider;
 
-use App\Exception\ErrorHandler;
 use Nilnice\Phalcon\Provider\AbstractServiceProvider;
 
 /**
