@@ -1,6 +1,10 @@
 {
   "name": "imajinyun/easy-phalcon",
   "description": "An application derived from the Phalcon framework is easier to develop interface.",
+  "keywords": [
+    "phalcon",
+    "omphalcon"
+  ],
   "require": {
     "vlucas/phpdotenv": "^2.5@dev",
     "illuminate/support": "^5.7@dev",
@@ -13,6 +17,11 @@
     },
     "files": [
       "app/Support/helpers.php"
+    ]
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "php -r \"copy('.env.example', '.env');\""
     ]
   },
   "minimum-stability": "dev",
