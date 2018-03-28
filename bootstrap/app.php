@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../config/paths.php';
+require __DIR__ . '/paths.php';
 require_once ROOT_DIR . 'vendor/autoload.php';
 
 try {
