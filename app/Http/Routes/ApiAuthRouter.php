@@ -34,7 +34,7 @@ class ApiAuthRouter extends AbstractRouter
             ->setName('authorize');
 
         // User authorize information.
-        $this->addGet('/detail/{id}', ['action' => 'detail'])
+        $this->addGet('/detail', ['action' => 'detail'])
             ->setName('detail');
     }
 }
