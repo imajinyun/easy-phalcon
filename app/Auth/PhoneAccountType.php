@@ -2,17 +2,15 @@
 
 namespace App\Auth;
 
-use App\Traits\FieldTrait;
+use App\Exception\UserAccountException;
 use App\Model\System\ApiAuth;
-use App\Service;
+use App\Support\Security;
 use Nilnice\Phalcon\Auth\AccountTypeInterface;
-use Nilnice\Phalcon\Auth\Manager;
+use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
 
 class PhoneAccountType implements AccountTypeInterface
 {
-    use FieldTrait;
-
     public const NAME = 'phone';
 
     /**
@@ -21,35 +19,38 @@ class PhoneAccountType implements AccountTypeInterface
      * @param array $data
      *
      * @return string
+     *
+     * @throws \App\Exception\UserAccountException
      */
-    public function login(array $data) : string
+    public function login(array $data): string
     {
         /** @var \Phalcon\Security $security */
-        $security = Di::getDefault()->get(Service::SECURITY);
-        $phone = $data[Manager::LOGIN_USERNAME];
-        $password = $data[Manager::LOGIN_PASSWORD];
-        $phone = self::encrypt($phone);
+        $security = Di::getDefault()->get('security');
+        $phone = $data[JWTAuth::LOGIN_USERNAME];
+        $password = $data[JWTAuth::LOGIN_PASSWORD];
+        $phone = Security::encrypt($phone);
         $bindParams = ['phone' => $phone, 'isDelete' => '2'];
-        $user = ApiAuth::findFirst([
-            'columns'    => (new ApiAuth())->columnMap(),
+
+        /** @var \App\Model\System\ApiAuth $auth */
+        $auth = ApiAuth::findFirst([
             'conditions' => 'phone=:phone: AND isDelete=:isDelete:',
             'limit'      => 1,
             'bind'       => $bindParams,
         ]);
 
-        if (! $user) {
-            return '-1';
+        if (! $auth) {
+            throw new UserAccountException('The user account not exist', 400);
         }
 
-        if (! $security->checkHash($password, $user->getPassword())) {
-            return '-2';
+        if (! $security->checkHash($password, $auth->getPassword())) {
+            throw new UserAccountException('The user password error', 400);
         }
 
-        if (! $user->getIsUsable()) {
-            return '-3';
+        if (! $auth->isUsable()) {
+            throw new UserAccountException('The user is locked', 400);
         }
 
-        return (string)$user->getId();
+        return $auth->getId();
     }
 
     /**
@@ -59,7 +60,7 @@ class PhoneAccountType implements AccountTypeInterface
      *
      * @return bool
      */
-    public function authenticate(string $identity) : bool
+    public function authenticate(string $identity): bool
     {
         $count = ApiAuth::count([
             'conditions' => 'id=:id:',

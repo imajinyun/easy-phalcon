@@ -3,11 +3,9 @@
 namespace App\Auth;
 
 use App\Exception\UserAccountException;
-use App\Exception\UserNotFoundException;
 use App\Model\System\ApiAuth;
 use Nilnice\Phalcon\Auth\AccountTypeInterface;
 use Nilnice\Phalcon\Auth\JWTAuth;
-use Nilnice\Phalcon\Auth\Manager;
 use Phalcon\Di;
 
 class EmailAccountType implements AccountTypeInterface
@@ -21,7 +19,7 @@ class EmailAccountType implements AccountTypeInterface
      *
      * @return string
      *
-     * @throws \App\Exception\ErrorHandler
+     * @throws \App\Exception\UserAccountException
      */
     public function login(array $data): string
     {
@@ -39,15 +37,15 @@ class EmailAccountType implements AccountTypeInterface
         ]);
 
         if (! $auth) {
-            throw new UserAccountException('The user account not exist');
+            throw new UserAccountException('The user account not exist', 400);
         }
 
         if (! $security->checkHash($password, $auth->getPassword())) {
-            throw new UserAccountException('The user password man be wrong');
+            throw new UserAccountException('The user password error', 400);
         }
 
         if (! $auth->isUsable()) {
-            throw new UserAccountException('The user may be locked up');
+            throw new UserAccountException('The user is locked', 400);
         }
 
         return $auth->getId();

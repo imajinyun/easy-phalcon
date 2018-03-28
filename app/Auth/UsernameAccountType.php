@@ -2,10 +2,10 @@
 
 namespace App\Auth;
 
+use App\Exception\UserAccountException;
 use App\Model\System\ApiAuth;
-use App\Service;
 use Nilnice\Phalcon\Auth\AccountTypeInterface;
-use Nilnice\Phalcon\Auth\Manager;
+use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
 
 class UsernameAccountType implements AccountTypeInterface
@@ -17,33 +17,36 @@ class UsernameAccountType implements AccountTypeInterface
      *
      * @param array $data
      *
-     * @return null|string
+     * @return string|null
+     *
+     * @throws \App\Exception\UserAccountException
      */
-    public function login(array $data) : ? string
+    public function login(array $data): ? string
     {
         /** @var \Phalcon\Security $security */
-        $security = Di::getDefault()->get(Service::SECURITY);
-        $username = $data[Manager::LOGIN_USERNAME];
-        $password = $data[Manager::LOGIN_PASSWORD];
+        $security = Di::getDefault()->get('security');
+        $username = $data[JWTAuth::LOGIN_USERNAME];
+        $password = $data[JWTAuth::LOGIN_PASSWORD];
 
-        $user = ApiAuth::findFirst([
+        /** @var \App\Model\System\ApiAuth $auth */
+        $auth = ApiAuth::findFirst([
             'conditions' => 'username = :username:',
             'bind'       => ['username' => $username],
         ]);
 
-        if (! $user) {
-            return '-1';
+        if (! $auth) {
+            throw new UserAccountException('The user account not exist', 400);
         }
 
-        if (! $security->checkHash($password, $user->getPassword())) {
-            return '-2';
+        if (! $security->checkHash($password, $auth->getPassword())) {
+            throw new UserAccountException('The user password error', 400);
         }
 
-        if (! $user->getIsUsable()) {
-            return '-3';
+        if (! $auth->isUsable()) {
+            throw new UserAccountException('The user is locked', 400);
         }
 
-        return (string)$user->getId();
+        return $auth->getId();
     }
 
     /**
@@ -53,7 +56,7 @@ class UsernameAccountType implements AccountTypeInterface
      *
      * @return bool
      */
-    public function authenticate(string $identity) : bool
+    public function authenticate(string $identity): bool
     {
         $count = ApiAuth::count([
             'conditions' => 'id=:id:',
