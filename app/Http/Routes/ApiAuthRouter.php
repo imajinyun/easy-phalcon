@@ -10,7 +10,7 @@ class ApiAuthRouter extends AbstractRouter
         $this->setPrefix('/api/v1/auth');
 
         // Default page.
-        $this->addGet('/')
+        $this->addGet('/', ['action' => 'index'])
             ->setName('index');
 
         // Create user.
