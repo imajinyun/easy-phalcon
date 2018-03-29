@@ -14,7 +14,7 @@ class DefaultController extends AbstractController
      */
     public function indexAction(): Response
     {
-        $message = '欢迎访问 Phalcon RESTful API';
+        $message = 'Welcome to Phalcon RESTful API Application';
         $result = [
             'description'   => '🔥 This is a RESTful API micro application based on Phalcon framework',
             'documentation' => 'https://github.com/imajinyun/phalcon-api/wiki/',
