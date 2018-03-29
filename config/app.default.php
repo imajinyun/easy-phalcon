@@ -53,10 +53,19 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Default Database Listen Query Log Filename
+     | Log Configuration
      |--------------------------------------------------------------------------
      |
      |
      */
-    'query'         => 'query.log',
+    'log'           => [
+        'db'  => 'query.log',
+        'app' => [
+            'name'        => 'runtime.log',
+            'mode'        => 'daily', // Support type: yearly/monthly/daily
+            'max'         => 7,
+            'file_format' => '{filename}-{date}',
+            'date_format' => 'Ymd',
+        ],
+    ],
 ];
