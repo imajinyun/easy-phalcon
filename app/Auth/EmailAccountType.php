@@ -7,6 +7,7 @@ use App\Model\System\ApiAuth;
 use Nilnice\Phalcon\Auth\AccountTypeInterface;
 use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
+use Phalcon\Mvc\Model;
 
 class EmailAccountType implements AccountTypeInterface
 {
@@ -17,11 +18,11 @@ class EmailAccountType implements AccountTypeInterface
      *
      * @param array $data
      *
-     * @return string
+     * @return \Phalcon\Mvc\Model
      *
      * @throws \App\Exception\UserAccountException
      */
-    public function login(array $data): string
+    public function login(array $data): Model
     {
         /** @var \Phalcon\Security $security */
         $security = Di::getDefault()->get('security');
@@ -30,7 +31,8 @@ class EmailAccountType implements AccountTypeInterface
         $bindParams = ['email' => $email];
 
         /** @var \App\Model\System\ApiAuth $auth */
-        $auth = ApiAuth::findFirst([
+        $auth = config('auth.class');
+        $auth = $auth::findFirst([
             'conditions' => 'email=:email:',
             'limit'      => 1,
             'bind'       => $bindParams,
@@ -48,7 +50,7 @@ class EmailAccountType implements AccountTypeInterface
             throw new UserAccountException('The user is locked', 400);
         }
 
-        return $auth->getId();
+        return $auth;
     }
 
     /**

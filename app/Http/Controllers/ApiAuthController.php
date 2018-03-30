@@ -65,20 +65,20 @@ class ApiAuthController extends AbstractController
             return $this->successResponse('注册成功');
         }
 
-        return $this->warningResponse('注册失败');
+        return $this->errorResponse('注册失败');
     }
 
     /**
      * Update user information.
      *
-     * @param null|string $id
+     * @param string $id
      *
      * @return \Nilnice\Phalcon\Http\Response
      */
-    public function updateAction($id = null): Response
+    public function updateAction($id): Response
     {
         if (! $id) {
-            return $this->warningResponse('Invalid parameter');
+            return $this->errorResponse('Invalid parameter');
         }
 
         /** @var \App\Model\System\ApiAuth $entity */
@@ -88,7 +88,7 @@ class ApiAuthController extends AbstractController
         ]);
 
         if (! $entity) {
-            return $this->warningResponse('User not found');
+            return $this->errorResponse('User not found');
         }
 
         $array = $this->getRaw();
@@ -98,14 +98,14 @@ class ApiAuthController extends AbstractController
         $validator = $this->validator($validation, $array);
 
         if ($validator['message']) {
-            return $this->warningResponse($validator['message'], $validator);
+            return $this->errorResponse($validator['message'], $validator);
         }
 
         $entity->setEmail($array['email'] ?? $entity->getEmail());
         $entity->setUsername($array['username'] ?? $entity->getUsername());
 
         if (! $entity->update()) {
-            return $this->warningResponse('更新失败');
+            return $this->errorResponse('更新失败');
         }
 
         return $this->successResponse('更新成功');
@@ -148,14 +148,14 @@ class ApiAuthController extends AbstractController
     /**
      * Delete user account.
      *
-     * @param null|string $id
+     * @param string $id
      *
      * @return \Nilnice\Phalcon\Http\Response
      */
-    public function deleteAction($id = null): Response
+    public function deleteAction($id): Response
     {
         if (! $id) {
-            return $this->warningResponse('Invalid parameter');
+            return $this->errorResponse('Invalid parameter');
         }
 
         /** @var \App\Model\System\ApiAuth $entity */
@@ -165,13 +165,13 @@ class ApiAuthController extends AbstractController
         ]);
 
         if (! $entity) {
-            return $this->warningResponse('Not found user');
+            return $this->errorResponse('User does not exist');
         }
 
         $entity->setIsDelete(true);
 
         if (! $entity->save()) {
-            return $this->warningResponse('删除失败');
+            return $this->errorResponse('删除失败');
         }
 
         return $this->successResponse('删除成功');
@@ -214,6 +214,8 @@ class ApiAuthController extends AbstractController
      * Get token detail.
      *
      * @return \Nilnice\Phalcon\Http\Response
+     *
+     * @throws \OutOfBoundsException
      */
     public function detailAction(): Response
     {
