@@ -39,7 +39,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * Warning notification.
+     * Error notification.
      *
      * @param string $message
      * @param array  $data
@@ -47,7 +47,7 @@ abstract class AbstractController extends Controller
      *
      * @return \Nilnice\Phalcon\Http\Response
      */
-    public function warningResponse(
+    public function errorResponse(
         string $message = 'NO',
         array $data = [],
         int $code = self::WARNING

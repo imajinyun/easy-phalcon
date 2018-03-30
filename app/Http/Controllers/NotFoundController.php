@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Nilnice\Phalcon\Http\Response;
+
 class NotFoundController extends AbstractController
 {
-    public function notFoundAction()
+    /**
+     * Not found action.
+     *
+     * @return \Nilnice\Phalcon\Http\Response
+     */
+    public function notFoundAction(): Response
     {
         $content = [
             'code'    => 200404,
@@ -12,9 +19,10 @@ class NotFoundController extends AbstractController
             'error'   => $this->dispatcher->getParams(),
         ];
 
-        return $this
-            ->response
-            ->setStatusCode(404, 'Not Found')
+        $this->response
+            ->setStatusCode(400, 'Not Found')
             ->setJsonContent($content);
+
+        return $this->response;
     }
 }

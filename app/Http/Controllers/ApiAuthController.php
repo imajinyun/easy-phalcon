@@ -38,7 +38,7 @@ class ApiAuthController extends AbstractController
         $validator = $this->validator($validation, $data);
 
         if ($validator['message']) {
-            return $this->warningResponse($validator['message'], $validator);
+            return $this->errorResponse($validator['message'], $validator);
         }
 
         // Filter post data.

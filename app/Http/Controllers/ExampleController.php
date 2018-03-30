@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\System\ApiAuth;
+use Nilnice\Phalcon\Http\Response;
 
 class ExampleController extends AbstractController
 {
-    public function indexAction()
+    /**
+     * Default action.
+     *
+     * @return \Nilnice\Phalcon\Http\Response
+     */
+    public function indexAction(): Response
     {
-        $object = ApiAuth::find();
-        $array = $object->toArray();
+        $array = [1, 2, 3, 4, 5];
 
-        return $this->successResponse('au', $array);
+        return $this->successResponse('This is a sample', $array);
     }
 }
