@@ -3,7 +3,7 @@
   "description": "An application derived from the Phalcon framework is easier to develop interface.",
   "keywords": [
     "phalcon",
-    "omphalcon"
+    "easy-phalcon"
   ],
   "require": {
     "vlucas/phpdotenv": "^2.5@dev",
