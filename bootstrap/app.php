@@ -1,12 +1,11 @@
 <?php
 
-require __DIR__ . '/paths.php';
-require_once ROOT_DIR . 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new \Dotenv\Dotenv(ROOT_DIR))->load();
+    (new \Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (\Dotenv\Exception\InvalidPathException $exception) {
-    echo $exception->getMessage();
+    exit($exception->getMessage());
 }
 
 /*
@@ -17,7 +16,7 @@ try {
 |
 */
 
-$app = new \Nilnice\Phalcon\Application(ROOT_DIR);
+$app = new \Nilnice\Phalcon\Application(__DIR__ . '/../');
 
 /*
 |--------------------------------------------------------------------------
