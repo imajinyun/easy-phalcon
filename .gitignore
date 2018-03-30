@@ -3,6 +3,7 @@
 /config/app.php
 /config/cache.php
 /config/database.php
+/config/flysystem.php
 /vendor
 /.env
 
