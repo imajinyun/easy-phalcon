@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Auth Configuration
@@ -9,4 +10,5 @@ return [
     |
     */
     'class' => \App\Model\System\ApiAuth::class,
+
 ];
