@@ -7,6 +7,7 @@ use App\Model\System\ApiAuth;
 use Nilnice\Phalcon\Auth\AccountTypeInterface;
 use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
+use Phalcon\Mvc\Model;
 
 class UsernameAccountType implements AccountTypeInterface
 {
@@ -17,11 +18,11 @@ class UsernameAccountType implements AccountTypeInterface
      *
      * @param array $data
      *
-     * @return string|null
+     * @return \Phalcon\Mvc\Model
      *
      * @throws \App\Exception\UserAccountException
      */
-    public function login(array $data): ? string
+    public function login(array $data): Model
     {
         /** @var \Phalcon\Security $security */
         $security = Di::getDefault()->get('security');
@@ -35,7 +36,7 @@ class UsernameAccountType implements AccountTypeInterface
         ]);
 
         if (! $auth) {
-            throw new UserAccountException('The user account not exist', 400);
+            throw new UserAccountException('The user account not exist', 404);
         }
 
         if (! $security->checkHash($password, $auth->getPassword())) {

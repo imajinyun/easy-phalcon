@@ -8,6 +8,7 @@ use Nilnice\Phalcon\Auth\AccountTypeInterface;
 use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\ModelInterface;
 
 class EmailAccountType implements AccountTypeInterface
 {
@@ -31,7 +32,7 @@ class EmailAccountType implements AccountTypeInterface
         $bindParams = ['email' => $email];
 
         /** @var \App\Model\System\ApiAuth $auth */
-        $auth = config('auth.class');
+        $auth = config('auth.user.class');
         $auth = $auth::findFirst([
             'conditions' => 'email=:email:',
             'limit'      => 1,
@@ -39,7 +40,7 @@ class EmailAccountType implements AccountTypeInterface
         ]);
 
         if (! $auth) {
-            throw new UserAccountException('The user account not exist', 400);
+            throw new UserAccountException('The user account not exist', 404);
         }
 
         if (! $security->checkHash($password, $auth->getPassword())) {
