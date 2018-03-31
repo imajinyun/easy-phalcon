@@ -9,6 +9,8 @@ return [
     |
     |
     */
-    'class' => \App\Model\System\ApiAuth::class,
+    'user' => [
+        'class' => \App\Model\System\ApiAuth::class,
+    ],
 
 ];

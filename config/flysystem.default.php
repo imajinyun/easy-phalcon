@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Flysystem Configuration
@@ -12,4 +13,5 @@ return [
     'local' => [
         'class' => \League\Flysystem\Adapter\Local::class,
     ],
+
 ];
