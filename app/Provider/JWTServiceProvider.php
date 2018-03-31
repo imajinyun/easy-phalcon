@@ -2,7 +2,6 @@
 
 namespace App\Provider;
 
-use App\Auth\EmailAccountType;
 use Nilnice\Phalcon\Provider\AbstractServiceProvider;
 
 /**
