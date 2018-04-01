@@ -47,7 +47,7 @@ class UsernameAccountType implements AccountTypeInterface
             throw new UserAccountException('The user is locked', 400);
         }
 
-        return $auth->getId();
+        return $auth;
     }
 
     /**

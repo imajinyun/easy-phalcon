@@ -8,7 +8,6 @@ use Nilnice\Phalcon\Auth\AccountTypeInterface;
 use Nilnice\Phalcon\Auth\JWTAuth;
 use Phalcon\Di;
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\ModelInterface;
 
 class EmailAccountType implements AccountTypeInterface
 {
